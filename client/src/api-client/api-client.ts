@@ -2,12 +2,14 @@
 
 import { getApiUrl } from '../config/config-service';
 import { Address } from '../models/address';
-import { ValidationStatus } from '../models/validation-status';
+import { ValidationStatus } from '../models/validation';
 
 type ValidateAddressResponse = {
 	status: ValidationStatus;
 };
 
+// Get the validation status
+// Could test by mocking `fetch`, but that's not a very useful test; use e2e tests instead
 export const validateAddress = ({
 	postcode,
 	suburb,

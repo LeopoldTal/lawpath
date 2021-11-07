@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import LawpathForm from './LawpathForm';
+import LawpathForm from './components/LawpathForm';
 
 import './index.css';
 

@@ -2,15 +2,22 @@
 // Allows the user to enter and validate an address
 
 import React, { FormEvent, useState } from 'react';
-import { validateAddress } from './api-client/api-client';
-import { AustralianState } from './models/address';
-import { ValidationStatus } from './models/validation-status';
+import { validateAddress } from '../api-client/api-client';
+import { AustralianState } from '../models/address';
+import { ValidationResult, ValidationStatus } from '../models/validation';
+import ValidationDisplay from './ValidationDisplay';
 
 const LawpathForm: React.FunctionComponent = () => {
+	// Address
 	const [postcode, setPostcode] = useState('');
 	const [suburb, setSuburb] = useState('');
 	const [ausState, setAusState] = useState<AustralianState | null>(null);
-	const [validationStatus, setValidationStatus] = useState<ValidationStatus>('unchecked');
+
+	// Validation
+	const [validationResult, setValidationResult] = useState<ValidationResult>({
+		address: {},
+		validationStatus: 'unchecked'
+	});
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSelectAusState = (ev: FormEvent<HTMLSelectElement>) => {
@@ -22,6 +29,13 @@ const LawpathForm: React.FunctionComponent = () => {
 
 	const handleSubmit = async (ev: FormEvent) => {
 		ev.preventDefault();
+
+		// Keep track of the address that was validated
+		const address = { postcode, suburb, state: ausState as AustralianState };
+		const setValidationStatus = (validationStatus: ValidationStatus) => setValidationResult({
+			address,
+			validationStatus
+		});
 
 		if (!postcode || !suburb || !ausState) {
 			setValidationStatus('missingRequiredFields');
@@ -63,7 +77,7 @@ const LawpathForm: React.FunctionComponent = () => {
 					type="text"
 					name="suburb"
 					id="suburb"
-					onChange={(ev) => setSuburb(ev.target.value)}
+					onChange={(ev) => setSuburb(ev.target.value.trim())}
 				/>
 			</p>
 			<p>
@@ -86,7 +100,10 @@ const LawpathForm: React.FunctionComponent = () => {
 			<p>
 				<button type="submit">Validate</button>
 			</p>
-			<pre>{''+isLoading} {validationStatus}</pre>
+			<ValidationDisplay
+				isLoading={isLoading}
+				{...validationResult}
+			/>
 		</form>
 	);
 };
