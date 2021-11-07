@@ -11,6 +11,15 @@ const app = express();
 // Treat query params as raw strings, since we never send structured data.
 app.set('query parser', 'simple');
 
+// Allow the client app to call this API.
+// For now, only allow local calls; replace this with a whitelist of URLs for deploying.
+app.use((req, res, next) => {
+	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+
+	next();
+});
+
 // If there were more routes, this would be moved to a separate controller.
 app.get('/validate-address', async (req, res) => {
 	const { suburb, postcode, state } = req.query;
