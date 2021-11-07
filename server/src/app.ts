@@ -24,6 +24,7 @@ app.get('/validate-address', async (req, res) => {
 	// Treat "this address is invalid" as a success, since the validation operation succeeded;
 	// if the client is expected to only send valid addresses, 400 could make more sense.
 	const { status } = validationResult;
+	console.debug('Validation result:', status);
 	const statusCode = status === 'error' ? 503 : 200;
 
 	res.status(statusCode).json(validationResult);
