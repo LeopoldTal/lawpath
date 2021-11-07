@@ -10,9 +10,9 @@ const PAGE_URL = 'http://localhost:3000/';
 const BROWSER_SETTINGS = {
 	dumpio: true,
 	// Enable these settings to watch Chromium run the tests
-	headless: false,
-	slowMo: 100,
-	devTools: true
+	// headless: false,
+	// slowMo: 100,
+	// devTools: true
 };
 
 describe('Lawpath form app', () => {
