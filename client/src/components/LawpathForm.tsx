@@ -57,10 +57,10 @@ const LawpathForm: React.FunctionComponent = () => {
 	}
 
 	return (
-		<form name="addressValidation" onSubmit={handleSubmit}>
-			<h1>Validate an Australian address</h1>
+		<form name="addressValidation" className="m-5" onSubmit={handleSubmit}>
+			<h1 className="mb-3">Validate an Australian address</h1>
 			<p>
-				<label htmlFor="postcode">Postcode: </label>
+				<label htmlFor="postcode" className="form-label">Postcode: </label>
 				<input
 					type="text"
 					name="postcode"
@@ -68,24 +68,27 @@ const LawpathForm: React.FunctionComponent = () => {
 					minLength={4}
 					maxLength={4}
 					pattern="\d+"
+					className="form-control"
 					onChange={(ev) => setPostcode(ev.target.value)}
 				/>
 			</p>
 			<p>
-				<label htmlFor="suburb">Suburb: </label>
+				<label htmlFor="suburb" className="form-label">Suburb: </label>
 				<input
 					type="text"
 					name="suburb"
 					id="suburb"
+					className="form-control"
 					onChange={(ev) => setSuburb(ev.target.value.trim())}
 				/>
 			</p>
 			<p>
-				<label htmlFor="ausState">State: </label>
+				<label htmlFor="ausState" className="form-label">State: </label>
 				<select
 					name="ausState"
 					id="ausState"
 					value={ausState || ''}
+					className="form-select"
 					onChange={handleSelectAusState}
 				>
 					<option hidden value=""></option>
@@ -98,7 +101,12 @@ const LawpathForm: React.FunctionComponent = () => {
 				</select>
 			</p>
 			<p>
-				<button type="submit">Validate</button>
+				<button
+					type="submit"
+					className="btn btn-primary my-2"
+				>
+					Validate
+				</button>
 			</p>
 			<ValidationDisplay
 				isLoading={isLoading}
