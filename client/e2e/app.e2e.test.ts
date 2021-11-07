@@ -3,6 +3,7 @@
  */
 
 import puppeteer, { Browser, ElementHandle, Page } from 'puppeteer';
+import { Address, AustralianState } from '../src/models/address';
 
 const PAGE_URL = 'http://localhost:3000/';
 
@@ -10,7 +11,8 @@ const BROWSER_SETTINGS = {
 	dumpio: true,
 	// Enable these settings to watch Chromium run the tests
 	headless: false,
-	slowMo: 300,
+	slowMo: 100,
+	devTools: true
 };
 
 describe('Lawpath form app', () => {
@@ -40,9 +42,64 @@ describe('Lawpath form app', () => {
 		expect(formText).toMatch(/State/i);
 	});
 
-	// TODO: address that exists
+	describe('address validation', () => {
+		// expect(…).toFillForm is supposed to do this, but it fails silently…
+		const validateAddress = async (
+			page: Page,
+			{ postcode, suburb, state }: Address
+		) => {
+			await page.type('input#postcode', postcode);
+			await page.type('input#suburb', suburb);
+			await page.select('select#ausState', state);
 
-	// TODO: wrong postcode
+			await page.click('button[type="submit"]');
 
-	// TODO: wrong state
+			return page.waitForResponse(res => res.status() === 200);
+		};
+
+		it('validates a correct address', async () => {
+			await page.goto(PAGE_URL);
+			await validateAddress(page, {
+				postcode: '3095',
+				suburb: 'Eltham',
+				state: AustralianState.VIC
+			});
+			await page.waitForNetworkIdle();
+
+			const message = await page.$('.message');
+			expect(message).toBeTruthy();
+			const messageText = await (message as ElementHandle).evaluate(e => e.textContent);
+			expect(messageText).toMatch(/Eltham 3095 VIC is a valid address./);
+		});
+
+		it('reports a wrong postcode', async () => {
+			await page.goto(PAGE_URL);
+			await validateAddress(page, {
+				postcode: '1234',
+				suburb: 'North Melbourne',
+				state: AustralianState.VIC
+			});
+			await page.waitForNetworkIdle();
+
+			const message = await page.$('.message');
+			expect(message).toBeTruthy();
+			const messageText = await (message as ElementHandle).evaluate(e => e.textContent);
+			expect(messageText).toMatch(/The postcode 1234 does not match the suburb North Melbourne./);
+		});
+
+		it('reports a wrong state', async () => {
+			await page.goto(PAGE_URL);
+			await validateAddress(page, {
+				postcode: '3000',
+				suburb: 'Melbourne',
+				state: AustralianState.NSW
+			});
+			await page.waitForNetworkIdle();
+
+			const message = await page.$('.message');
+			expect(message).toBeTruthy();
+			const messageText = await (message as ElementHandle).evaluate(e => e.textContent);
+			expect(messageText).toMatch(/The suburb Melbourne does not exist in the state NSW./);
+		});
+	});
 });

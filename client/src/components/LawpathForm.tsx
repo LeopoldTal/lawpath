@@ -57,7 +57,7 @@ const LawpathForm: React.FunctionComponent = () => {
 	}
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form name="addressValidation" onSubmit={handleSubmit}>
 			<h1>Validate an Australian address</h1>
 			<p>
 				<label htmlFor="postcode">Postcode: </label>

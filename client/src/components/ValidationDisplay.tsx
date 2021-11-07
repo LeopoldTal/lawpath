@@ -31,7 +31,7 @@ const ValidationDisplay: React.FunctionComponent<ValidationDisplayProps> = ({
 	const statusMessage = messages[validationStatus];
 
 	return (
-		<p>{statusMessage}</p>
+		<p className="message">{statusMessage}</p>
 	);
 };
 

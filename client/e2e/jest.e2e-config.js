@@ -10,4 +10,5 @@ module.exports = {
 	setupTestFrameworkScriptFile: 'expect-puppeteer',
 	testMatch: ['**/?(*.)+(spec|test).[t]s'],
 	transform: { '^.+\\.ts?$': 'ts-jest' },
+	testTimeout: 60 * 1000 // requests are slow, allow plenty of time
 };
