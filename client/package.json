@@ -6,22 +6,27 @@
 	"license": "UNLICENSED",
 	"private": true,
 	"dependencies": {
+		"@testing-library/dom": "^8.11.0",
 		"@testing-library/jest-dom": "^5.11.4",
 		"@testing-library/react": "^11.1.0",
 		"@testing-library/user-event": "^12.1.10",
-		"@types/jest": "^26.0.15",
+		"@types/jest": "^27.0.2",
 		"@types/node": "^12.0.0",
 		"@types/react": "^17.0.0",
 		"@types/react-dom": "^17.0.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"react-scripts": "4.0.3",
+		"ts-jest": "^26.0.0",
 		"typescript": "^4.1.2"
 	},
 	"scripts": {
 		"start": "react-scripts start",
 		"build": "react-scripts build",
-		"test": "react-scripts test",
+		"test": "yarn run test:ci && yarn run test:e2e",
+		"test:ci": "react-scripts test --watchAll=false --coverage",
+		"test:e2e": "yarn build && jest -c e2e/jest.e2e-config.js",
+		"test:watch": "react-scripts test",
 		"eject": "react-scripts eject"
 	},
 	"eslintConfig": {
@@ -41,5 +46,12 @@
 			"last 1 firefox version",
 			"last 1 safari version"
 		]
+	},
+	"devDependencies": {
+		"@types/expect-puppeteer": "^4.4.7",
+		"@types/jest-environment-puppeteer": "^4.4.1",
+		"@types/puppeteer": "^5.4.4",
+		"jest-puppeteer": "^6.0.0",
+		"puppeteer": "^11.0.0"
 	}
 }

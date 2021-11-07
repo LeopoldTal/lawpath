@@ -18,9 +18,16 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"noEmit": true,
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"types": [
+			"puppeteer",
+			"jest-environment-puppeteer",
+			"expect-puppeteer"
+		]
 	},
 	"include": [
-		"src"
+		"src",
+		"e2e",
+		"node_modules/@types/puppeteer/index.d.ts"
 	]
 }
