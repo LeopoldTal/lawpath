@@ -61,6 +61,22 @@ describe('searchAddress', () => {
 			expect(addresses).toEqual([]);
 		});
 
+		it('lists a single address', async () => {
+			mockResponseBody({
+				localities: {
+					locality: {
+						location: 'ELTHAM',
+						postcode: 3095,
+						state: 'VIC'
+					}
+				}
+			});
+			const addresses = await searchAddress({});
+			expect(addresses).toEqual([
+				{ postcode: '3095', suburb: 'ELTHAM', state: 'VIC' }
+			]);
+		});
+
 		it('lists all found addresses', async () => {
 			mockResponseBody({
 				localities: {
